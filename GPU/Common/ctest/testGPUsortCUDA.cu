@@ -9,7 +9,7 @@
 // or submit itself to any jurisdiction.
 
 /// \file testGPUsortCUDA.cu
-/// \author ...
+/// \author Michael Lettrich
 
 #define GPUCA_GPUTYPE_PASCAL
 
