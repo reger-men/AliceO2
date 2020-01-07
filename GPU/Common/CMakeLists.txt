@@ -44,13 +44,22 @@ if(ALIGPU_BUILD_TYPE STREQUAL "O2")
                              GPUCA_TPC_GEOMETRY_O2 HAVE_O2HEADERS)
   
   # cuda test, only compile if CUDA
-  if(CUDA_ENABLED AND NOT $ENV{ALIBUILT_O2_TESTS})
-    o2_add_test(${MODULE}
-                PUBLIC_LINK_LIBRARIES O2::${MODULE}
+  if(CUDA_ENABLED)
+    o2_add_test(GPUsortCUDA NAME test_GPUsortCUDA
                 SOURCES ctest/testGPUsortCUDA.cu
+                PUBLIC_LINK_LIBRARIES O2::${MODULE} cub::cub
                 COMPONENT_NAME GPU
                 LABELS gpu)
   endif()
+
+  # # hip test, only compile if HIP 
+  # if(HIP_ENABLED)
+  #   o2_add_test(GPUsortHIP NAME test_GPUsortHIP
+  #               SOURCES ctest/testGPUsortHIP.hip.cxx
+  #               PUBLIC_LINK_LIBRARIES O2::${MODULE} hip::host hip::device hip::hipcub ROCm::rocThrust
+  #               COMPONENT_NAME GPU
+  #               LABELS gpu)
+  # endif()
 
   install(FILES ${HDRS_CINT} ${HDRS_INSTALL} DESTINATION include/GPU)
 endif()

@@ -90,3 +90,9 @@ if(HIP_AMDGPUTARGET)
   target_link_options(${targetName} PUBLIC --amdgpu-target=${HIP_AMDGPUTARGET})
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --amdgpu-target=${HIP_AMDGPUTARGET}")
 endif()
+
+o2_add_test(GPUsortHIP NAME test_GPUsortHIP
+                SOURCES ctest/testGPUsortHIP.hip.cxx
+                PUBLIC_LINK_LIBRARIES O2::GPUCommon hip::host hip::device hip::hipcub ROCm::rocThrust
+                COMPONENT_NAME GPU
+                LABELS gpu)
