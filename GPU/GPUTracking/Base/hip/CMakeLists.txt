@@ -96,3 +96,4 @@ o2_add_test(GPUsortHIP NAME test_GPUsortHIP
                 PUBLIC_LINK_LIBRARIES O2::GPUCommon hip::host hip::device hip::hipcub ROCm::rocThrust
                 COMPONENT_NAME GPU
                 LABELS gpu)
+

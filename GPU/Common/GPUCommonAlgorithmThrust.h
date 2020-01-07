@@ -47,7 +47,7 @@ GPUdi() void GPUCommonAlgorithm::sort(T* begin, T* end, const S& comp)
 template <class T>
 GPUdi() void GPUCommonAlgorithm::sortInBlock(T* begin, T* end)
 {
-  if (get_local_id(0) == 0 ) {
+  if (get_local_id(0) == 0) {
     thrust::device_ptr<T> thrustBegin(begin);
     thrust::device_ptr<T> thrustEnd(end);
     thrust::sort(thrust::cuda::par, thrustBegin, thrustEnd);
@@ -57,7 +57,7 @@ GPUdi() void GPUCommonAlgorithm::sortInBlock(T* begin, T* end)
 template <class T, class S>
 GPUdi() void GPUCommonAlgorithm::sortInBlock(T* begin, T* end, const S& comp)
 {
-  if (get_local_id(0) == 0 ) {
+  if (get_local_id(0) == 0) {
     thrust::device_ptr<T> thrustBegin(begin);
     thrust::device_ptr<T> thrustEnd(end);
     thrust::sort(thrust::cuda::par, thrustBegin, thrustEnd, comp);

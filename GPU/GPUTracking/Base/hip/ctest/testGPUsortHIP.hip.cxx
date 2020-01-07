@@ -29,7 +29,6 @@
 
 static constexpr float TOLERANCE = 10 * std::numeric_limits<float>::epsilon();
 
-
 hipError_t hipCheckError(hipError_t hipErrorCode)
 {
   if (hipErrorCode != hipSuccess) {
@@ -40,7 +39,7 @@ hipError_t hipCheckError(hipError_t hipErrorCode)
 
 void hipCheckErrorFatal(hipError_t hipErrorCode)
 {
-  if(hipCheckError(hipErrorCode)!= hipSuccess){
+  if (hipCheckError(hipErrorCode) != hipSuccess) {
     exit(-1);
   }
 }
@@ -48,7 +47,7 @@ void hipCheckErrorFatal(hipError_t hipErrorCode)
 struct TestEnvironment {
   TestEnvironment() : size(101), data(nullptr), sorted(size)
   {
-    hipCheckErrorFatal(hipHostMalloc(&data, size * sizeof(float),hipHostRegisterDefault));
+    hipCheckErrorFatal(hipHostMalloc(&data, size * sizeof(float), hipHostRegisterDefault));
 
     // create an array of unordered floats with negative and positive values
     for (size_t i = 0; i < size; i++) {

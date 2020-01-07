@@ -52,15 +52,6 @@ if(ALIGPU_BUILD_TYPE STREQUAL "O2")
                 LABELS gpu)
   endif()
 
-  # # hip test, only compile if HIP 
-  # if(HIP_ENABLED)
-  #   o2_add_test(GPUsortHIP NAME test_GPUsortHIP
-  #               SOURCES ctest/testGPUsortHIP.hip.cxx
-  #               PUBLIC_LINK_LIBRARIES O2::${MODULE} hip::host hip::device hip::hipcub ROCm::rocThrust
-  #               COMPONENT_NAME GPU
-  #               LABELS gpu)
-  # endif()
-
   install(FILES ${HDRS_CINT} ${HDRS_INSTALL} DESTINATION include/GPU)
 endif()
 
