@@ -47,6 +47,12 @@ if(ALIGPU_BUILD_TYPE STREQUAL "O2")
     $<TARGET_PROPERTY:O2::GPUTracking,COMPILE_DEFINITIONS>)
 
   install(FILES ${HDRS} DESTINATION include/GPU)
+
+  o2_add_test(GPUsortHIP NAME test_GPUsortHIP
+                  SOURCES ctest/testGPUsortHIP.hip.cxx
+                  PUBLIC_LINK_LIBRARIES O2::GPUCommon hip::host hip::device hip::hipcub ROCm::rocThrust
+                  COMPONENT_NAME GPU
+                  LABELS gpu)
 endif()
 
 if(ALIGPU_BUILD_TYPE STREQUAL "ALIROOT")
@@ -90,10 +96,3 @@ if(HIP_AMDGPUTARGET)
   target_link_options(${targetName} PUBLIC --amdgpu-target=${HIP_AMDGPUTARGET})
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --amdgpu-target=${HIP_AMDGPUTARGET}")
 endif()
-
-o2_add_test(GPUsortHIP NAME test_GPUsortHIP
-                SOURCES ctest/testGPUsortHIP.hip.cxx
-                PUBLIC_LINK_LIBRARIES O2::GPUCommon hip::host hip::device hip::hipcub ROCm::rocThrust
-                COMPONENT_NAME GPU
-                LABELS gpu)
-
