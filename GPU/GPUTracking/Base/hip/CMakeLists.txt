@@ -23,7 +23,8 @@ string(REPLACE " -ggdb " " " CMAKE_LINK_FLAGS " ${CMAKE_LINK_FLAGS} ")
 string(REPLACE " -ggdb " " " CMAKE_LINK_FLAGS_${CMAKE_BUILT_TYPE} " ${CMAKE_LINK_FLAGS_${CMAKE_BUILT_TYPE}} ")
 
 #setting flags as a global option for all HIP targets.
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-invalid-command-line-argument -Wno-unused-command-line-argument -Wno-invalid-constexpr -Wno-ignored-optimization-argument -Wno-unused-private-field")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-invalid-command-line-argument -Wno-unused-command-line-argument -Wno-invalid-constexpr -Wno-ignored-optimization-argument -Wno-unused-private-field -finline-hint-functions")
+set(CMAKE_LINK_FLAGS "${CMAKE_LINK_FLAGS} -finline-hint-functions")
 
 if(DEFINED HIP_AMDGPUTARGET)
   set(TMP_TARGET "(GPU Target ${HIP_AMDGPUTARGET})")
