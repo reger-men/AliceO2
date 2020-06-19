@@ -193,7 +193,11 @@
 #define GPUconstexprref()
 #endif
 
+#ifdef __HIPCC__
+#define GPUrestrict()
+#else
 #define GPUrestrict() __restrict__
+#endif
 
 // Macros for GRID dimension
 #if defined(__CUDACC__) || defined(__HIPCC__)
