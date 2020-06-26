@@ -58,7 +58,7 @@
 #define GPUCA_MIN_BIN_SIZE 2.f                        // Minimum bin size in TPC fast access grid
 #define GPUCA_MAX_BIN_SIZE 1000.f                     // Maximum bin size in TPC fast access grid
 
-#define GPUCA_TPC_COMP_CHUNK_SIZE 1024                // Chunk size of sorted unattached TPC cluster in compression
+#define GPUCA_TPC_COMP_CHUNK_SIZE 512                // Chunk size of sorted unattached TPC cluster in compression
 
 #if defined(HAVE_O2HEADERS) && (!defined(__OPENCL__) || defined(__OPENCLCPP__)) && !(defined(ROOT_VERSION_CODE) && ROOT_VERSION_CODE < 393216)
   //Use definitions from the O2 headers if available for nicer code and type safety

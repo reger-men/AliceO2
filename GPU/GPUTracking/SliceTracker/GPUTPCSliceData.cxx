@@ -154,7 +154,21 @@ GPUdi() static void UpdateMinMaxYZ(float& yMin, float& yMax, float& zMin, float&
   }
 }
 
-GPUd() int GPUTPCSliceData::InitFromClusterData(int nBlocks, int nThreads, int iBlock, int iThread, GPUconstantref() const MEM_CONSTANT(GPUConstantMem) * GPUrestrict() mem, int iSlice, float* tmpMinMax)
+#if defined(GPUCA_GPUCODE_DEVICE)
+
+__device__ __forceinline__ float atomicMaxFloat (float * addr, float value) {
+    float old;
+    old = (value >= 0) ? __int_as_float(atomicMax((int *)addr, __float_as_int(value))) :
+         __uint_as_float(atomicMin((unsigned int *)addr, __float_as_uint(value)));
+
+    return old;
+}
+
+#endif
+
+
+
+GPUdii() int GPUTPCSliceData::InitFromClusterData(int nBlocks, int nThreads, int iBlock, int iThread, GPUconstantref() const MEM_CONSTANT(GPUConstantMem) * GPUrestrict() mem, int iSlice, float* tmpMinMax)
 {
 #ifdef GPUCA_GPUCODE
   constexpr bool EarlyTransformWithoutClusterNative = false;
@@ -283,6 +297,7 @@ GPUd() int GPUTPCSliceData::InitFromClusterData(int nBlocks, int nThreads, int i
     CAMath::AtomicMaxShared(&tmpMinMax[1], yMax);
     CAMath::AtomicMaxShared(&tmpMinMax[2], -zMin);
     CAMath::AtomicMaxShared(&tmpMinMax[3], zMax); */
+    #if !defined(GPUCA_GPUCODE_DEVICE)
     for (int i = 0; i < nThreads; i++) { // Todo: Implement a better version of this stupid atomic max replacement
       GPUbarrier();
       if (iThread == i) {
@@ -300,7 +315,17 @@ GPUd() int GPUTPCSliceData::InitFromClusterData(int nBlocks, int nThreads, int i
         }
       }
     }
+    //GPUbarrier();
+    #else
+     //#if defined(GPUCA_GPUCODE_DEVICE)
+    /*tmpMinMax[0] =*/ atomicMaxFloat(&tmpMinMax[0],-yMin);
+    /*tmpMinMax[1] =*/ atomicMaxFloat(&tmpMinMax[1],yMax);
+    /*tmpMinMax[2] =*/ atomicMaxFloat(&tmpMinMax[2],-zMin);
+    /*tmpMinMax[3] =*/ atomicMaxFloat(&tmpMinMax[3],zMax);
+    #endif
+  
     GPUbarrier();
+
     if (iThread == 0) {
       CreateGrid(mem, &row, -tmpMinMax[0], tmpMinMax[1], -tmpMinMax[2], tmpMinMax[3]);
     }
